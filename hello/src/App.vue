@@ -2,6 +2,7 @@
 import HelloWorld from "./components/HelloWorld.vue";
 import TheWelcome from "./components/TheWelcome.vue";
 import TitleComp from "./components/TitleComponents.vue";
+import BindComp from "./components/BindSample.vue";
 </script>
 
 <template>
@@ -13,6 +14,7 @@ import TitleComp from "./components/TitleComponents.vue";
       <TitleComp title="제목 2" content="내용 2" />
       <TitleComp title="제목 3" content="내용 3" />
       <HelloWorld msg="You did it!" name="hongkildong" />
+      <BindComp></BindComp>
     </div>
   </header>
 

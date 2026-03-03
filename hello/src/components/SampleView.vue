@@ -6,9 +6,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed } from "vue"; //함수 x 속성
 
-//일반 변수 = ref 객체 reactive
+//반응형 함수 = 일반 변수 ref ,객체 reactive
 let name = ref("홍길동");
 let count = ref(0);
 const data = reactive({ PI: 3.14, radius: 3, area: 0 }); //변경 =>
