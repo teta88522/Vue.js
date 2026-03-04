@@ -1,6 +1,7 @@
-<!-- views/ToDoDirective.vue -->
 <script setup>
-import { ref, reactive, compile } from "vue";
+import { ref, reactive } from "vue";
+import TaskInfo from "@/components/TaskInfo.vue";
+
 const todos = reactive([
   { no: 1, task: "Hit the gym", complete: true },
   { no: 2, task: "Pay bills", complete: true },
@@ -9,38 +10,38 @@ const todos = reactive([
   { no: 5, task: "Read a book", complete: false },
   { no: 6, task: "Organize office", complete: false },
 ]);
-// newElment = () => {};
-// const myNodelist =
-// todo 완료여부 처리 => li 태그의 class 속성 값 제어
-const todoCompleted = (selectedNo) => {
-  todos.forEach((todo) => {
-    if (todo.no == selectedNo) {
-      todo.complete = !todo.complete;
-    }
-  });
-};
 
-// todo 삭제 함수 => 배열의 데이터를 삭제
-const delTodo = (selectedNo) => {
-  // 특정 조건을 만족하는 데이터의 인덱스 반환
-  let delIdx = todos.findIndex((todo) => todo.no == selectedNo);
-  todos.splice(delIdx, 1);
-};
-
-// input을 사용하는 변수
 const newTask = ref("");
-// <span>태그에 연결된 이벤트핸들러
+
+// [추가] 완료 여부 토글 함수
+const todoCompleted = (no) => {
+  const target = todos.find((t) => t.no === no);
+  if (target) {
+    target.complete = !target.complete;
+  }
+};
+
+// [추가] 삭제 함수
+const delTodo = (no) => {
+  const index = todos.findIndex((t) => t.no === no);
+  if (index !== -1) {
+    todos.splice(index, 1);
+  }
+};
+
+// [수정] 새로운 항목 추가 (비어있을 때 대응)
 const newElment = () => {
-  //{ no: 1, task: "Hit the gym", complete: true }
-  let lastTodo = todos[todos.length - 1];
-  let newNo = lastTodo.no + 1;
-  let newTodo = {
+  if (newTask.value.trim() === "") return; // 빈 값 방지
+
+  let newNo = todos.length > 0 ? todos[todos.length - 1].no + 1 : 1;
+
+  const newTodo = {
     no: newNo,
     task: newTask.value,
     complete: false,
   };
+
   todos.push(newTodo);
-  // input 태그 초기화
   newTask.value = "";
 };
 </script>
@@ -54,24 +55,24 @@ const newElment = () => {
         v-model="newTask"
         id="myInput"
         placeholder="title..."
+        @keyup.enter="newElment"
       />
-      <button v-on:click="newElment()" class="addBtn">ADD</button>
+      <button v-on:click="newElment" class="addBtn">ADD</button>
     </label>
   </div>
 
   <ul id="myUL">
-    <li
-      v-for="todo of todos"
-      v-bind:class="{ checked: todo.complete }"
-      v-on:click.self="todoCompleted(todo.no)"
-    >
-      {{ todo.task }}
-      <span class="close" v-on:click.stop="delTodo(todo.no)">X</span>
-    </li>
+    <TaskInfo
+      v-for="info in todos"
+      :key="info.no"
+      v-bind:todo="info"
+      v-on:taskChecked="todoCompleted"
+      v-on:delTask="delTodo"
+    ></TaskInfo>
   </ul>
 </template>
 
-<style scoped>
+<style>
 * {
   box-sizing: border-box;
 }

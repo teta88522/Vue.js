@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const server = "https://jsonplaceholder.typicode.com/users/1/posts";
+
+      // 전체조회
+      fetch(server)
+        .then((resp) => resp.json())
+        .then((data) => {
+          console.log(data);
+        });
+
+      // 단건조회
+      fetch(server + "?id=1")
+        .then((resp) => resp.json())
+        .then((data) => {
+          console.log(data);
+        });
+
+      // 등록
+      fetch(server, {
+        method: "post",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: 1,
+          id: 11,
+          title: "hello",
+          body: "world",
+        }),
+      })
+        .then((resp) => resp.json())
+        .then((data) => console.log(data));
+
+      // 수정
+
+      // 삭제
+    </script>
+  </body>
+</html>
