@@ -7,24 +7,27 @@
   </head>
   <body>
     <script>
-      const server = "https://jsonplaceholder.typicode.com/users/1/posts";
+      const server = "https://jsonplaceholder.typicode.com";
 
       // 전체조회
-      fetch(server)
+      fetch(server + "/posts")
         .then((resp) => resp.json())
         .then((data) => {
           console.log(data);
-        });
+        })
+        .catch((err) => console.log(err));
+
+      const id = 1;
 
       // 단건조회
-      fetch(server + "?id=1")
+      fetch(`${server}/posts/${id}`)
         .then((resp) => resp.json())
         .then((data) => {
           console.log(data);
         });
 
       // 등록
-      fetch(server, {
+      fetch(`${server}/posts`, {
         method: "post",
         headers: {
           "Content-type": "application/json",
@@ -40,8 +43,25 @@
         .then((data) => console.log(data));
 
       // 수정
-
+      fetch(`${server}/posts/${id}`, {
+        method: "put",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: 1,
+          title: "hello",
+          body: "world",
+        }),
+      })
+        .then((resp) => resp.json())
+        .then((data) => console.log("수정:" + data));
       // 삭제
+      fetch(`${server}/posts/${id}`, {
+        method: "delete",
+      })
+        .then((resp) => resp.json())
+        .then((data) => console.log("삭제:" + data));
     </script>
   </body>
 </html>
